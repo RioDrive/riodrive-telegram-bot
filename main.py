@@ -42,7 +42,14 @@ def extract_text_from_image(image_bytes):
     }
 
     response = requests.post(url, json=payload)
-    result = response.json()
+
+if response.status_code != 200:
+    return f"VISION ERROR: {response.text}"
+
+result = response.json()
+
+if "error" in result:
+    return f"VISION ERROR: {result}"
 
     if "responses" in result and "textAnnotations" in result["responses"][0]:
         return result["responses"][0]["textAnnotations"][0]["description"]
