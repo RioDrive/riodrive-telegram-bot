@@ -25,31 +25,19 @@ def extract_text_from_image(image_bytes):
     api_key = os.getenv("VISION_API_KEY")
 
     image_base64 = base64.b64encode(image_bytes).decode("utf-8")
-
     url = f"https://vision.googleapis.com/v1/images:annotate?key={api_key}"
 
-    payload = {
-        "requests": [
-            {
-                "image": {
-                    "content": image_base64
-                },
-                "features": [
-                    {"type": "TEXT_DETECTION"}
-                ]
-            }
-        ]
-    }
+    payload = { ... }
 
     response = requests.post(url, json=payload)
 
-if response.status_code != 200:
-    return f"VISION ERROR: {response.text}"
+    if response.status_code != 200:
+        return f"VISION ERROR: {response.text}"
 
-result = response.json()
+    result = response.json()
 
-if "error" in result:
-    return f"VISION ERROR: {result}"
+    if "error" in result:
+        return f"VISION ERROR: {result}"
 
     if "responses" in result and "textAnnotations" in result["responses"][0]:
         return result["responses"][0]["textAnnotations"][0]["description"]
