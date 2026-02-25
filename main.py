@@ -71,7 +71,7 @@ def extract_amount(text: str):
     return None
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Rio Drive – бот учёта расходов запущен.")
-await update.message.reply_text(text)
+
 async def month(update: Update, context: ContextTypes.DEFAULT_TYPE):
     now = datetime.now()
     month_str = now.strftime("%Y-%m")
@@ -86,6 +86,10 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     image_bytes = await file.download_as_bytearray()
 
     text = extract_text_from_image(image_bytes)
+    
+    await update.message.reply_text("=== OCR TEXT ===")
+    await update.message.reply_text(text)
+    
     amount = extract_amount(text)
 
     if amount:
