@@ -48,7 +48,13 @@ def extract_text_from_image(image_bytes):
         return result["responses"][0]["textAnnotations"][0]["description"]
 
     return ""
+import re
 
+def extract_amount(text: str):
+    match = re.search(r"\d+[.,]\d{2}", text)
+    if match:
+        return match.group().replace(",", ".")
+    return None
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Rio Drive – бот учёта расходов запущен.")
 
