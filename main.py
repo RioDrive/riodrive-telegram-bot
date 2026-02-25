@@ -51,9 +51,16 @@ def extract_text_from_image(image_bytes):
 import re
 
 def extract_amount(text: str):
-    match = re.search(r"\d+[.,]\d{2}", text)
+    # ищем формат 113,53 или 113.53
+    match = re.search(r"\d{1,4}[.,]\d{2}", text)
     if match:
         return match.group().replace(",", ".")
+
+    # ищем формат 113 53 (если OCR разбил число)
+    match = re.search(r"\d{1,4}\s\d{2}", text)
+    if match:
+        return match.group().replace(" ", ".")
+
     return None
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Rio Drive – бот учёта расходов запущен.")
